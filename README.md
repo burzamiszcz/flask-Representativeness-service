@@ -79,26 +79,26 @@ Returns the status of the current training process.
 > - errors (array): An array of error messages and their corresponding timestamps.
 
 ---
-#### Predict Relevance Scores
+#### Predict representativeness Scores
 ##### Endpoint: POST /predict
 
-Predicts the relevance scores for the given objects using the trained model.
+Predicts the representativeness scores for the given objects using the trained model.
 
 ##### Request:
 
 * Method: POST
 * Content-Type: application/json
 * Body:
-  * objects (array): An array of objects for which relevance scores should be predicted.
+  * objects (array): An array of objects for which representativeness scores should be predicted.
 ##### Response:
 
 * Status Code: 200 with the following JSON payload:
 ```json
 {
-  "relevance_scores": [<score1>, <score2>, ...]
+  "representativeness_scores": [<score1>, <score2>, ...]
 }
 ```
-> - relevance_scores (array): An array of predicted relevance scores.
+> - representativeness_scores (array): An array of predicted representativeness scores.
 
 ---
 ### Additional Information
@@ -106,7 +106,7 @@ Predicts the relevance scores for the given objects using the trained model.
 - The /train endpoint starts the training process in a separate thread to keep the service responsive.
 - The training process divides the data into L subsets and performs parallel processing on each subset using a thread pool.
 - The K parameter controls the number of neighbors used in the Nearest Neighbors algorithm.
-- Once training is complete, the trained model can be used for predicting relevance scores using the /predict endpoint.
+- Once training is complete, the trained model can be used for predicting representativeness scores using the /predict endpoint.
 - If there was an error during training, the /training_status endpoint will return the error details along with the timestamp.
 - The service utilizes a queue (exception_queue) to store and retrieve any exceptions that occur during training.
 

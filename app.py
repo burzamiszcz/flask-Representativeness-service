@@ -32,11 +32,11 @@ def train_model(data, L, K):
     try:
         np.random.shuffle(data)
         subsets = np.array_split(data, L)
-        relevance_scores = []
+        representativeness_scores = []
         def process_subset(subset):
-            nonlocal relevance_scores
+            nonlocal representativeness_scores
             distances = calculate_distance(subset, K)
-            relevance_scores = np.concatenate((relevance_scores, 1 / (1 + distances)))
+            representativeness_scores = np.concatenate((representativeness_scores, 1 / (1 + distances)))
         
         # Uruchamianie wpsółbieżne każdej częsci zbioru
         with ThreadPoolExecutor() as executor:
@@ -44,7 +44,7 @@ def train_model(data, L, K):
 
         if exception_queue.empty():
             X = np.concatenate(subsets)
-            y = np.array(relevance_scores)
+            y = np.array(representativeness_scores)
             model = RandomForestRegressor()
             model.fit(X, y)
             time.sleep(5)
@@ -105,8 +105,8 @@ def predict():
         return jsonify({'error': 'Model nie został jeszcze wytrenowany'}), 400
 
     objects = request.get_json()
-    relevance_scores = model.predict(objects)
-    return jsonify({'relevance_scores': list(relevance_scores)}), 200
+    representativeness_scores = model.predict(objects)
+    return jsonify({'representativeness_scores': list(representativeness_scores)}), 200
 
 
 if __name__ == '__main__':
